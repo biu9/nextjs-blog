@@ -1,17 +1,30 @@
-import Post from "../components/Post"
+import Post from "../components/Post";
+import { POST,GET } from '../request/index';
+
+const requestBlogType = {
+  'recentPosts':1,
+  'popularPosts':2,
+}
 
 export async function getServerSideProps(context) {
-  const data = {
-    name: 'John Doe',
-  }
 
-  if (!data) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
+  const recentPosts = await POST({
+    url:'/api/blog/get',
+    body:{
+      type:requestBlogType.recentPosts,
     }
+  });
+
+  const popularPosts = await POST({
+    url:'/api/blog/get',
+    body:{
+      type:requestBlogType.popularPosts,
+    }
+  });
+
+  const data = {
+    recentPosts,
+    popularPosts,
   }
 
   return {
@@ -100,7 +113,8 @@ const Intro = () => {
   )
 }
 
-const RecentPosts = () => {
+const RecentPosts = ({ posts }) => {
+  console.log('posts',posts);
   return (
     <div className="">
       <div className="flex flex-col space-y-6 mb-10">
@@ -112,21 +126,19 @@ const RecentPosts = () => {
         </div>
       </div>
       <div className="flex flex-col space-y-6 min-w-96">
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
+        {
+          posts.data instanceof Array && posts.data.map((post,index) => {
+            return (
+              <Post key={index} content={post.content} date={post.time} title={post.title}/>
+            )
+          })
+        }
       </div>
     </div>
   )
 }
 
-const MostReadPosts = () => {
+const MostReadPosts = ({ posts }) => {
   return (
     <div className="">
       <div className="flex flex-col space-y-6 mb-10">
@@ -138,9 +150,13 @@ const MostReadPosts = () => {
         </div>
       </div>
       <div className="flex flex-col space-y-6 min-w-96">
-        <Post/>
-        <Post/>
-        <Post/>
+      {
+          posts.data instanceof Array && posts.data.map((post,index) => {
+            return (
+              <Post key={index} content={post.content} date={post.time} title={post.title}/>
+            )
+          })
+        }
       </div>
     </div>
   )
@@ -177,17 +193,20 @@ const BlogType = ({ text }) => {
 }
 
 export default function Home({ data }) {
+
+  console.log('data is ', data);
+
   return (
     <div className="bg-gradient-to-br from-white via-indigo-100 to-pink-200 w-full min-h-screen px-40 py-10 min-w-max">
       <NavBar/>
       <div className="flex justify-between space-x-80 mb-40">
         <div className="flex flex-col space-y-40">
           <Logo/>
-          <RecentPosts/>
+          <RecentPosts posts={data.recentPosts}/>
         </div>
         <div className="flex flex-col space-y-40">
           <Intro/>
-          <MostReadPosts/>
+          <MostReadPosts posts={data.popularPosts}/>
           <BlogTypes/>
         </div>
       </div>
