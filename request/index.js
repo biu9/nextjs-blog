@@ -11,9 +11,9 @@ export const POST = async ({ url,body }) => {
         });
         
     return res.json();
-    } catch {
+    } catch(error) {
         return {
-            error: 'Network error',
+            error: error,
         }
     }
 }
@@ -24,9 +24,9 @@ export const GET = async ({ url }) => {
             method: 'GET',
         });
         return res.json();
-    } catch {
+    } catch(error) {
         return {
-            error: 'Network error',
+            error: error,
         }
     }
 }

@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState,useEffect } from "react";
+import { useRouter } from "next/router";
 
 const requestBlogType = {
   'recentPosts':1,
@@ -44,8 +45,13 @@ export async function getServerSideProps(context) {
   }
 }
 
-const LoginModal = () => {
+const LoginModal = ({ open,setOpen }) => {
   const [imgClassIndex,setImgClassIndex] = useState(0);
+  const [loginForm,setLoginForm] = useState({
+    username:'',
+    password:'',
+  });
+  const router = useRouter();
 
   const imgClasses = ['translate-x-full z-10','-translate-x-full z-0','translate-x-0 z-20'];
   const imgClassPrefix = 'w-96 absolute transform transition duration-500';
@@ -60,7 +66,7 @@ const LoginModal = () => {
   
   return (
       <Modal
-      open={true}
+      open={open}
       >
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-2xl bg-white outline-none flex space-x-10 font-mono">
           <div className="p-10">
@@ -95,11 +101,39 @@ const LoginModal = () => {
           </div>
           <div className="w-96 p-10 flex flex-col space-y-6">
             <div className="font-bold text-3xl mb-5">LOG IN </div>
-            <TextField  label="username" variant="standard" />
-            <TextField  label="password" variant="standard" />
+            <TextField  
+            onChange={(e) => {
+              setLoginForm({
+                ...loginForm,
+                username:e.target.value,
+              })
+            }}
+            label="username" variant="standard" />
+            <TextField  
+            onChange={(e) => {
+              setLoginForm({
+                ...loginForm,
+                password:e.target.value,
+              })
+            }}
+            label="password" variant="standard" />
             <div className="flex justify-between pt-5">
-              <Button variant="text" color="error">cancel</Button>
-              <Button variant="text">log in</Button>
+              <Button 
+              onClick={() => setOpen(false)}
+              variant="text" color="error">cancel</Button>
+              <Button 
+              onClick={() => {
+                POST({
+                  url:'/api/user/login',
+                  body:loginForm,
+                }).then(res => {
+                  if(res.data instanceof Array && res.data.length > 0) {
+                    setOpen(false);
+                    router.push('/admin');
+                  }
+                })
+              }}
+              variant="text">log in</Button>
             </div>
             <div className="w-full text-center pt-16"> or you can sign in with</div>
             <div className="flex justify-center space-x-6">
@@ -114,17 +148,21 @@ const LoginModal = () => {
 }
 
 const NavBar = () => {
+  const [openLoginModal,setOpenLoginModal] = useState(false);
+
   return (
     <div className="flex justify-between font-bold font-mono text-gray-600 items-center mb-40 space-x-40">
-      <LoginModal/>
+      <LoginModal open={openLoginModal} setOpen={setOpenLoginModal}/>
       <div className="text-5xl">DAS</div>
       <div className="flex space-x-10 text-2xl">
         <div>blogs</div>
         <div>projects</div>
         <div>about</div>
       </div>
-      <div className="text-3xl flex justify-center items-center whitespace-nowrap cursor-pointer">
-        sign in
+      <div 
+      onClick={() => setOpenLoginModal(true)}
+      className="text-3xl flex justify-center items-center whitespace-nowrap cursor-pointer">
+        log in
         <div className="bg-signIn w-10 h-10 bg-cover mx-5"></div>
       </div>
     </div>
