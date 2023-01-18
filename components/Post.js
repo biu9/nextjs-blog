@@ -62,7 +62,7 @@ export default function Post({ content, date, title }) {
               <div className='text-xl'>{date}</div>
             </div>
           </div>
-          <div className=' prose-lg mt-10 w-full'>
+          <div className=' prose mt-10 w-full max-w-full'>
             <Markdown>
               {content}
             </Markdown>
