@@ -136,17 +136,23 @@ const LoginModal = ({ open, setOpen }) => {
 
 export const NavBar = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false)
-  let ifLogged = false
+  const [ifLogged, setIfLogged] = useState(false)
   const router = useRouter()
 
-  if (typeof window !== 'undefined') {
-    ifLogged = window.localStorage.getItem('user') === null ? false : true
-  }
+  useEffect(() => {
+    if(window.localStorage.getItem('user')){
+      setIfLogged(true)
+    }
+  },[])
 
   return (
     <div className="flex justify-between font-bold font-mono text-gray-600 items-center mb-40 space-x-40">
       <LoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-      <div className="text-5xl">DAS</div>
+      <div 
+      onClick={() => {
+        router.push('/')
+      }}
+      className="text-5xl cursor-pointer">DAS</div>
       <div className="flex space-x-10 text-2xl">
         <div>blogs</div>
         <div>projects</div>
