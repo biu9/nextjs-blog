@@ -159,9 +159,9 @@ const MostReadPosts = ({ posts }) => {
 
 const BlogTypes = ({ types }) => {
   return (
-    <div>
+    <div className="w-full">
       <div className="text-5xl font-bold font-mono mb-8">Blog Types</div>
-      <div className="flex  w-96 flex-wrap justify-start">
+      <div className="flex flex-wrap justify-start">
         {
           types.data instanceof Array && types.data.map((type,index) => {
             return (
@@ -187,14 +187,14 @@ export default function Home({ data }) {
   console.log('data is ', data);
 
   return (
-    <div className="bg-gradient-to-br from-white via-indigo-100 to-pink-200 w-full min-h-screen px-40 py-10 min-w-max">
+    <div className="bg-gradient-to-br from-white via-indigo-100 to-pink-200 w-full min-h-screen px-40 py-10  flex flex-col">
       <NavBar/>
-      <div className="flex justify-between space-x-80 mb-40">
-        <div className="flex flex-col space-y-40">
+      <div className="flex justify-between space-x-80 mb-40 flex-1">
+        <div className="flex flex-col space-y-40 flex-1">
           <Logo/>
           <RecentPosts posts={data.recentPosts}/>
         </div>
-        <div className="flex flex-col space-y-40">
+        <div className="flex flex-col space-y-40 flex-1">
           <Intro/>
           <MostReadPosts posts={data.popularPosts}/>
           <BlogTypes types={data.types} />

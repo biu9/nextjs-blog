@@ -11,7 +11,7 @@ export default function Admin() {
     author: '',
     date: '',
     userId: '',
-    id: '',
+    id: new Date().getTime(),
     type: '',
   })
 
@@ -77,10 +77,6 @@ export default function Admin() {
           <Button
             onClick={() => {
               console.log('blog: ', blog)
-              setBlog({
-                ...blog,
-                id: new Date().getTime(),
-              })
               POST({
                 url: '/api/blog/add',
                 body: blog,

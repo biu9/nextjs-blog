@@ -5,8 +5,9 @@ export const POST = async ({ url,body }) => {
         const res = await fetch(server + url, {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
+            mode: 'cors',
             body: JSON.stringify(body),
         });
         
