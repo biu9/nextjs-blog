@@ -187,7 +187,7 @@ export default function Home({ data }) {
   console.log('data is ', data);
 
   return (
-    <div className="bg-gradient-to-br from-white via-indigo-100 to-pink-200 w-full min-h-screen px-40 py-10  flex flex-col">
+    <div className="bg-gradient-to-br from-white via-indigo-100 to-pink-200 min-h-screen px-40 py-10  flex flex-col min-w-max	">
       <NavBar/>
       <div className="flex justify-between space-x-80 mb-40 flex-1">
         <div className="flex flex-col space-y-40 flex-1">

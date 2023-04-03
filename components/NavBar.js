@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { POST } from '../request'
+import Link from 'next/link'
 
 const LoginModal = ({ open, setOpen }) => {
   const [imgClassIndex, setImgClassIndex] = useState(0)
@@ -154,9 +155,15 @@ export const NavBar = () => {
       }}
       className="text-5xl cursor-pointer">DAS</div>
       <div className="flex space-x-10 text-2xl">
-        <div>blogs</div>
-        <div>projects</div>
-        <div>about</div>
+        <Link href='/blogs'>
+          <div className='hover:after:w-full after:w-0 after:h-1  after:block after:bg-gray-600 after:transition-all after:duration-300 after:ease-in-out cursor-pointer'>blogs</div>
+        </Link>
+        <Link href='/projects'>
+          <div className='hover:after:w-full after:w-0 after:h-1  after:block after:bg-gray-600 after:transition-all after:duration-300 after:ease-in-out cursor-pointer'>projects</div>
+        </Link>
+        <Link href='/about'>
+          <div className='hover:after:w-full after:w-0 after:h-1  after:block after:bg-gray-600 after:transition-all after:duration-300 after:ease-in-out cursor-pointer'>about</div>
+        </Link>
       </div>
       {ifLogged ? (
         <div
